@@ -27,3 +27,21 @@ button.addEventListener("click", () => {
       image.src = response.data.images.original.url;
     });
 });
+
+const search = document.querySelector("input");
+search.addEventListener("input", (event) => {
+  image.src = "";
+
+  fetch(
+    `https://api.giphy.com/v1/gifs/translate?api_key=dVAHLFdSVflST46wwWAhxRHQruM4pawq&s=${event.target.value}`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (response) {
+      image.src = response.data.images.original.url;
+    })
+    .catch(() => {
+      return;
+    });
+});
