@@ -1,47 +1,28 @@
 import "./styles.css";
 import "./modern-normalize.css";
 
+const button = document.querySelector("button");
+const search = document.querySelector("input");
 const image = document.querySelector("img");
 
-fetch(
-  "https://api.giphy.com/v1/gifs/translate?api_key=dVAHLFdSVflST46wwWAhxRHQruM4pawq&s=cats"
-)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (response) {
-    image.src = response.data.images.original.url;
-  });
+function fetchGif(searchTerm) {
+  if (!searchTerm) return;
 
-const button = document.querySelector("button");
-button.addEventListener("click", () => {
   image.src = "";
-
   fetch(
-    "https://api.giphy.com/v1/gifs/translate?api_key=dVAHLFdSVflST46wwWAhxRHQruM4pawq&s=cats"
+    `https://api.giphy.com/v1/gifs/translate?api_key=dVAHLFdSVflST46wwWAhxRHQruM4pawq&s=${searchTerm}`
   )
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (response) {
+    .then((response) => response.json())
+    .then((response) => {
       image.src = response.data.images.original.url;
-    });
+    })
+    .catch((error) => console.log("Error fetching GIF:", error));
+}
+
+button.addEventListener("click", () => {
+  fetchGif(search.value);
 });
 
-const search = document.querySelector("input");
 search.addEventListener("input", (event) => {
-  image.src = "";
-
-  fetch(
-    `https://api.giphy.com/v1/gifs/translate?api_key=dVAHLFdSVflST46wwWAhxRHQruM4pawq&s=${event.target.value}`
-  )
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (response) {
-      image.src = response.data.images.original.url;
-    })
-    .catch(() => {
-      return;
-    });
+  fetchGif(event.target.value);
 });
